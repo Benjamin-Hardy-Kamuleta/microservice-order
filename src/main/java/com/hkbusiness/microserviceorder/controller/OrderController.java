@@ -1,5 +1,6 @@
 package com.hkbusiness.microserviceorder.controller;
 
+import com.hkbusiness.microserviceorder.exception.OrderItemOutOfStockException;
 import com.hkbusiness.microserviceorder.model.Order;
 import com.hkbusiness.microserviceorder.model.dto.OrderRequest;
 import com.hkbusiness.microserviceorder.service.OrderService;
@@ -18,7 +19,7 @@ public class OrderController {
     private final OrderService orderService;
     @PostMapping("/order")
     @ResponseStatus(HttpStatus.CREATED)
-    public String placeOrder(@RequestBody OrderRequest orderRequest){
+    public String placeOrder(@RequestBody OrderRequest orderRequest) throws OrderItemOutOfStockException {
         orderService.placeOrder(orderRequest);
         return "Order successfully placed";
     }
