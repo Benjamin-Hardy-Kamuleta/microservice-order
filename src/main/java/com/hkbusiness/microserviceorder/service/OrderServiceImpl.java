@@ -2,6 +2,7 @@ package com.hkbusiness.microserviceorder.service;
 
 import com.hkbusiness.microserviceorder.config.feign.InventoryClient;
 import com.hkbusiness.microserviceorder.dao.OrderRepository;
+import com.hkbusiness.microserviceorder.exception.OrderItemOutOfStockException;
 import com.hkbusiness.microserviceorder.model.Order;
 import com.hkbusiness.microserviceorder.model.OrderItem;
 import com.hkbusiness.microserviceorder.model.dto.OrderRequest;
@@ -22,7 +23,7 @@ public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepo;
     private final InventoryClient inventoryClient;
     @Override
-    public String placeOrder(OrderRequest orderRequest) {
+    public String placeOrder(OrderRequest orderRequest) throws OrderItemOutOfStockException {
         Order order = new Order();
         List<OrderItem> orderItems = orderRequest.getOrderItems();
         List<OrderItem> availableProducts = inventoryClient.availableProducts();
@@ -38,7 +39,7 @@ public class OrderServiceImpl implements OrderService{
             }
         }
         if(cart.size() != orderItems.size()){
-            throw new RuntimeException();
+            throw new OrderItemOutOfStockException("Requested items are not all in stock");
         }
         order.setOrderItems(cart);
         orderRepo.save(order);
