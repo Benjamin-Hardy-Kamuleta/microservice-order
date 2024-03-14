@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Document(collection = "orders")
 public class Order {
+    private String id;
     private String orderNumber = UUID.randomUUID().toString();
     private List<OrderItem> orderItems;
 }

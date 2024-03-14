@@ -10,4 +10,8 @@ public interface OrderService {
     List<Order> orders();
     Order findByOrderNumber(String orderNumber);
 
+    boolean deleteOrderByOrderId(String orderI);
+
+    boolean deleteOrderByOrderNumber(String orderNumber);
+
 }
