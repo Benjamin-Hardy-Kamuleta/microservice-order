@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +54,31 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Order findByOrderNumber(String orderNumber) {
         return orderRepo.findByOrderNumber(orderNumber);
+    }
+
+    @Override
+    public boolean deleteOrderByOrderId(String orderId) {
+
+        Optional<Order> orderToDelete =  orderRepo.findAll().stream()
+                .filter(ord -> ord.getId().equals(orderId)).findFirst();
+        if (orderToDelete.isPresent()){
+            orderRepo.deleteById(orderId);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteOrderByOrderNumber(String orderNumber) {
+
+        List<Order> orders =  orderRepo.findAll();
+        for (Order order: orders){
+            if (order.getOrderNumber().equals(orderNumber)){
+                orderRepo.delete(order);
+                return true;
+            }
+        }
+        return false;
     }
 
 }
