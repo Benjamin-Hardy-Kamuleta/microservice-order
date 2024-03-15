@@ -11,4 +11,7 @@ public interface InventoryClient {
 
     @GetMapping("/api/inventories/products")
     public List<OrderItem> availableProducts();
+
+    @GetMapping("/api/inventories")
+    public List<OrderItem> inventories();
 }

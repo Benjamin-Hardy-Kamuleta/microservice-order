@@ -14,7 +14,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(OrderItemOutOfStockException.class)
     public ResponseEntity<ErrorMessage> orderItemOutOfStockException(OrderItemOutOfStockException exception, WebRequest request){
-        ErrorMessage message = new ErrorMessage(HttpStatus.PARTIAL_CONTENT,exception.getMessage());
-        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(message);
+        ErrorMessage message = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR,exception.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorMessage> orderNotFoundException(OrderNotFoundException exception, WebRequest request){
+        ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+    }
+
+    @ExceptionHandler(ProductCodeNotFoundException.class)
+    public ResponseEntity<ErrorMessage> productCodeNotFoundException(ProductCodeNotFoundException exception, WebRequest request){
+        ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
 }
